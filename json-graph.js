@@ -12,6 +12,10 @@ const model = new falcor.Model({
             name: "withdraw money from ATM",
             done: false,
             prerequisites: []
+        },
+        "123": {
+          name: "a new item",
+          done: false
         }
     },
     todos: [
@@ -37,6 +41,15 @@ const response = dataSource.get([
   ['todos', 0, 'prerequisites', { from: 0, to: 1 }, ['name', 'done']]
 ])
 response.subscribe((jsonGraphEnvelope) => {
-  console.log('subscribe', jsonGraphEnvelope)
-  console.log(JSON.stringify(jsonGraphEnvelope, null, 4))
+  // console.log('subscribe', jsonGraphEnvelope)
+  // console.log(JSON.stringify(jsonGraphEnvelope, null, 4))
 })
+
+// dataSource.call(
+//   ['todos', 'push'], 
+//   [{ $type: 'ref', value: ['todosById', 123]}], 
+//   [['name']], 
+//   [['length']]
+// ).subscribe((jsonGraphEnvelope) => {
+//   console.log('created', JSON.stringify(jsonGraphEnvelope))
+// })
