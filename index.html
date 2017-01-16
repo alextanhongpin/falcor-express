@@ -10,13 +10,19 @@
       
       // retrieve the "greeting" key from the root of the Virtual JSON resource
       model.
-        get("greeting").
-        then(function(response) {
-          document.write(response.json.greeting);
-        })
+      get("greeting").
+      then(function(response) {
+        console.log(response.json.greeting);
+      })
+
       model.get('index')
       .then((res) => {
         console.log(res.json.index)
+      })
+
+      model.get('user.name')
+      .then((res) => {
+        console.log(res.json)
       })
     </script>
   </head>
