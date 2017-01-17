@@ -1,3 +1,6 @@
+
+const Customer = require('./model.js')
+
 const CustomerController = {
 
   getCustomersByID () {
@@ -8,16 +11,7 @@ const CustomerController = {
     }
   },
   getCustomers () {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const customers = [
-           { name: 'john.doe', id: 1 },
-           { name: 'jane.doe', id: 2 },
-           { name: 'baby.doe', id: 3 }
-        ]
-        resolve(customers)
-      }, 150)
-    })
+    return Customer.find({})
   }
 }
 

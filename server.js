@@ -1,11 +1,17 @@
 const falcorExpress = require('falcor-express')
-const jsong = require('falcor-json-graph')
+const jsonGraph = require('falcor-json-graph')
 const Router = require('falcor-router')
 const express = require('express')
 const app = express()
 const CustomerController = require('./controller.js')
 
-console.log(CustomerController)
+const db = require('./db.js')
+// var jsonGraph = require('falcor-json-graph');
+
+// var atom = jsonGraph.atom("a string wrapped in an atom"); // creates { $type: "atom", value: "a string wrapped in an atom" }
+// var ref = jsonGraph.ref("todos[0].name"); // creates { $type: "ref", value: ["todos", 0, "name"] }
+// var error = jsonGraph.error("something bad happened."); // creates { $type: "error", value: "something bad happened." }
+
 
 app.use('/model.json', falcorExpress.dataSourceRoute((req, res) => {
   // Create a Virtual JSON resource with a single key ("greeting")
@@ -28,23 +34,22 @@ app.use('/model.json', falcorExpress.dataSourceRoute((req, res) => {
         const attributes = pathSet.attributes
         const request = CustomerController.getCustomers()
         return request.then((customers) => {
-          console.log(customers)
-          let jsonGraph = {
+          let output = {
             customers: {}
           }
 
           pathSet.ids.map((id) => {
             const customer = customers[id]
             if (!customers) {
-              jsonGraph.customers[id] = jsong.atom(customer)
+              output.customers[id] = jsonGraph.atom(id)
             } else {
-              let prop = jsonGraph.customers[id] = {}
+              output.customers[id] = {}
               attributes.forEach((attr) => {
-                prop[attr] = jsong.atom(customer[attr])
+                output.customers[id][attr] = jsonGraph.atom(customer[attr])
               })
             }
           })
-          return { jsonGraph }
+          return { jsonGraph: output }
         })
       }
     }

@@ -14,6 +14,7 @@
     "falcor-express": "^0.1.4",
     "falcor-json-graph": "^1.1.7",
     "falcor-router": "^0.5.2",
+    "mongoose": "^4.7.7",
     "nodemon": "^1.11.0"
   }
 }
