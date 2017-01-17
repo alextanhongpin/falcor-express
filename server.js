@@ -13,34 +13,39 @@ app.use('/model.json', falcorExpress.dataSourceRoute((req, res) => {
     {
       route: 'customers.length',
       get (pathSet) {
-        const customers = CustomerController.getCustomers()
-        const attributes = pathSet[1]
-        return {
-          path: ['customers', 'length'],
-          value: customers.length
-        }
+        const request = CustomerController.getCustomers()
+        return request.then((customers) => {
+          const attributes = pathSet[1]
+          return {
+            path: ['customers', 'length'],
+            value: customers.length
+          }
+        })
       }
     }, {
       route: 'customers[{integers:ids}][{keys:attributes}]',
       get (pathSet) {
         const attributes = pathSet.attributes
-        const customers = CustomerController.getCustomers()
-        let jsonGraph = {
-          customers: {}
-        }
-
-        pathSet.ids.map((id) => {
-          const customer = customers[id]
-          if (!customers) {
-            jsonGraph.customers[id] = jsong.atom(customer)
-          } else {
-            let prop = jsonGraph.customers[id] = {}
-            attributes.forEach((attr) => {
-              prop[attr] = jsong.atom(customer[attr])
-            })
+        const request = CustomerController.getCustomers()
+        return request.then((customers) => {
+          console.log(customers)
+          let jsonGraph = {
+            customers: {}
           }
+
+          pathSet.ids.map((id) => {
+            const customer = customers[id]
+            if (!customers) {
+              jsonGraph.customers[id] = jsong.atom(customer)
+            } else {
+              let prop = jsonGraph.customers[id] = {}
+              attributes.forEach((attr) => {
+                prop[attr] = jsong.atom(customer[attr])
+              })
+            }
+          })
+          return { jsonGraph }
         })
-        return { jsonGraph }
       }
     }
   ])

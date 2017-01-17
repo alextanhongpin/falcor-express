@@ -8,11 +8,16 @@ const CustomerController = {
     }
   },
   getCustomers () {
-    return [
-     { name: 'john.doe', id: 1 },
-     { name: 'jane.doe', id: 2 },
-     { name: 'baby.doe', id: 3 }
-    ]
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const customers = [
+           { name: 'john.doe', id: 1 },
+           { name: 'jane.doe', id: 2 },
+           { name: 'baby.doe', id: 3 }
+        ]
+        resolve(customers)
+      }, 150)
+    })
   }
 }
 
